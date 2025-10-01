@@ -1,3 +1,4 @@
+import { Prisma } from "../generated/prisma";
 import prisma from "../utils/prisma";
 
 export const getAllEvents = async () => {
@@ -18,4 +19,18 @@ export const getEventOne = async (id: number) => {
     console.log(error);
     return false;
   }
-}
+};
+
+type Event = Prisma.Args<typeof prisma.event, "create">["data"];
+export const createEvent = async (data: Event) => {
+  
+  try {
+    return await prisma.event.create({
+      data,
+    });
+   
+  } catch (error) {
+    console.log(error);
+    return false;
+  }
+};

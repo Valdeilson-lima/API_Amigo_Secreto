@@ -14,10 +14,14 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+
+
 app.use(requestIntercepter);
 
 app.use('/', siteRoutes);
 app.use('/admin', adminRoutes);
+
+
 
 const runServer = (port: number, server: http.Server) => {
     server.listen(port, () => {

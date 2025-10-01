@@ -14,5 +14,7 @@ router.get('/events', authController.validateTokenMiddleware, eventController.ge
 
 router.get('/events/:id', authController.validateTokenMiddleware, eventController.getEventById);
 
+router.post('/events', authController.validateTokenMiddleware, eventController.createEvent);
+
 
 export default router;

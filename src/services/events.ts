@@ -21,7 +21,11 @@ export const getEventOne = async (id: number) => {
   }
 };
 
-type Event = Prisma.Args<typeof prisma.event, "create">["data"];
+type Event = {
+  title: string;
+  description: string;
+  grouped: boolean;
+}
 export const createEvent = async (data: Event) => {
   
   try {
@@ -29,6 +33,19 @@ export const createEvent = async (data: Event) => {
       data,
     });
    
+  } catch (error) {
+    console.log(error);
+    return false;
+  }
+};
+
+
+export const updateEvent = async (id: number, data: Partial<Event>) => {
+  try {
+    return await prisma.event.update({
+      where: { id },
+      data,
+    });
   } catch (error) {
     console.log(error);
     return false;

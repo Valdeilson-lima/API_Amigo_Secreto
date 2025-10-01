@@ -4,7 +4,7 @@ import { z } from "zod";
 
 export const getAll: RequestHandler = async (_req, res) => {
   const itens = await EventModel.getAllEvents();
-  
+
   res.json(itens ?? []);
 };
 
@@ -36,4 +36,38 @@ export const createEvent: RequestHandler = async (req, res) => {
     return res.status(500).json({ error: "Erro ao criar evento" });
   }
   res.status(201).json({ event: newEvent });
+};
+
+export const updateEvent: RequestHandler = async (req, res) => {
+  const { id } = req.params;
+  const updateEventSchema = z.object({
+    status: z.enum(["active", "inactive"]).optional(),
+    title: z.string().trim().min(1, "title é obrigatório").optional(),
+    description: z.string().min(1, "description é obrigatória").optional(),
+    grouped: z.boolean().optional(),
+  });
+
+  const body = updateEventSchema.safeParse(req.body);
+  if (!body.success) {
+    return res
+      .status(400)
+      .json({ error: "Dados inválidos", details: body.error.issues });
+  }
+
+  // Remove campos undefined
+  const data = Object.fromEntries(
+    Object.entries(body.data).filter(([_, v]) => v !== undefined)
+  );
+
+  const updatedEvent = await EventModel.updateEvent(Number(id), data);
+  if (updatedEvent) {
+    if (updatedEvent.status) {
+      // TODO: Fazer sorteio
+    } else {
+      // TODO: Limpar sorteio
+    }
+
+    res.json({ event: updatedEvent, status: "Atualizado com sucesso" });
+  }
+  res.status(404).json({ error: "Evento não encontrado" });
 };

@@ -51,3 +51,15 @@ export const updateEvent = async (id: number, data: Partial<Event>) => {
     return false;
   }
 };
+
+export const deleteEvent = async (id: number) => {
+  try {
+    await prisma.event.delete({
+      where: { id },
+    });
+    return true;
+  } catch (error) {
+    console.log(error);
+    return false;
+  }
+};

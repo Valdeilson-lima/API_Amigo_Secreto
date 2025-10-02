@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import * as authController from '../controllers/auth';
 import * as eventController from '../controllers/events';
+import * as groupController from '../controllers/groups'; 
 
 const router = Router();
 
@@ -18,5 +19,9 @@ router.post('/events', authController.validateTokenMiddleware, eventController.c
 
 router.put('/events/:id', authController.validateTokenMiddleware, eventController.updateEvent);
 
+router.delete('/events/:id', authController.validateTokenMiddleware, eventController.deleteEvent);
+
+// Rotas de Groups podem ser adicionadas aqui
+router.get('/events/:id_event/groups', authController.validateTokenMiddleware, groupController.getAllGroups);
 
 export default router;

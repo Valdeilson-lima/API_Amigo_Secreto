@@ -71,3 +71,14 @@ export const updateEvent: RequestHandler = async (req, res) => {
   }
   res.status(404).json({ error: "Evento não encontrado" });
 };
+
+
+export const deleteEvent: RequestHandler = async (req, res) => {
+  const { id } = req.params;
+
+  const deleted = await EventModel.deleteEvent(Number(id));
+  if (deleted) {
+    return res.json({ status: "Evento deletado com sucesso" });
+  }
+  res.status(404).json({ error: "Evento não encontrado" });
+}
